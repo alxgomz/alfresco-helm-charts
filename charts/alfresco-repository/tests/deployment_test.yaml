@@ -266,7 +266,7 @@ tests:
           path: spec.template.spec.nodeSelector.node_label
           value: node_value
 
-  - it: should render labels for deployment
+  - it: should render labels & annotations for deployment
     values: *test_values
     chart:
       version: 1.0.0
@@ -275,6 +275,8 @@ tests:
       nameOverride: testName
       additionalLabels:
         my-custom-chart-label: custom-value
+      podAnnotations:
+        my-pod-annotation: pod-annotation-value
       global:
         additionalLabels:
           my-global-custom-label: global-custom-value
@@ -291,6 +293,9 @@ tests:
             helm.sh/chart: alfresco-repository-1.0.0
             my-global-custom-label: global-custom-value
             my-custom-chart-label: custom-value
+      - equal:
+          path: spec.template.metadata.annotations.my-pod-annotation
+          value: pod-annotation-value
 
   - it: should have rollingUpdate when strategy.type is RollingUpdate
     set:
