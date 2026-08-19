@@ -94,11 +94,17 @@ jobs:
         with:
           version: ${{ env.HELM_VERSION }}
 
+      - name: Set up Go
+        uses: actions/setup-go@40f1582b2485089dde7abd97c1529aa768e1baff # v5.6.0
+        with:
+          go-version: '1.25'
+          cache: false
+
       - name: Set up Unit Test plugin for Helm
         env:
-          HELM_UNITTEST_VERSION: v1.0.3
+          HELM_UNITTEST_VERSION: feature/coverage
         run: >-
-          helm plugin install https://github.com/helm-unittest/helm-unittest
+          helm plugin install https://github.com/alxgomz/helm-unittest
           --version $HELM_UNITTEST_VERSION
           --verify=false
 
@@ -107,8 +113,27 @@ jobs:
         with:
           version: ${{ env.CHART_TESTING_VERSION }}
 
+      - name: Debug helm-unittest coverage
+        run: |
+          for chart in charts/alfresco-repository; do
+            echo "=== Running helm unittest on $chart ==="
+            helm unittest "$chart" --coverage-file "$chart/coverage" --coverage-format cobertura || true
+            echo "=== Coverage file check ==="
+            ls -la "$chart"/coverage* 2>/dev/null || echo "No coverage files found"
+          done
+
       - name: Run chart-testing (lint)
         run: ct lint --config ct.yaml ${{ env.TEST_ALL_CHARTS == 'true' && '--all' || '' }}
+
+      - name: Upload coverage to Codecov
+        if: always()
+        uses: codecov/codecov-action@0fb7174895f61a3b6b78fc075e0cd60383518dac # v5.5.5
+        with:
+          files: charts/*/coverage.xml
+          flags: helm-unittest
+          fail_ci_if_error: false
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
   install:
     needs: list-changed
