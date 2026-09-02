@@ -10,7 +10,7 @@ coverage:
         informational: true
 
 comment:
-  layout: "header, diff, flags, components, tree, sunburst"
+  layout: "header, diff, flags, components, tree"
   behavior: default
   require_changes: false
 
