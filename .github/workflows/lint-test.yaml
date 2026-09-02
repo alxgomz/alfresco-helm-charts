@@ -129,7 +129,6 @@ jobs:
             ./codecov --verbose upload-process \
               --disable-search \
               -f "$f" \
-              -F helm-unittest \
               -F "$chart"
           done
 

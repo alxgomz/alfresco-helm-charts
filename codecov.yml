@@ -3,9 +3,11 @@ coverage:
     project:
       default:
         target: auto
+        informational: true
     patch:
       default:
         target: auto
+        informational: true
 
 comment:
   layout: "header, diff, flags, components, tree, sunburst"
@@ -22,7 +24,6 @@ flag_management:
       - type: project
         target: auto
   individual_flags:
-    - name: helm-unittest
     - name: activemq
     - name: alfresco-activiti
     - name: alfresco-activiti-admin
