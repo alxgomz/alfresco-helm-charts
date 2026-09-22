@@ -3,46 +3,123 @@ coverage:
     project:
       default:
         target: auto
+        informational: true
     patch:
       default:
         target: auto
+        informational: true
 
 comment:
-  layout: "header, diff, flags, components, tree, sunburst"
+  layout: "header, diff, flags, components, tree"
   behavior: default
   require_changes: false
+  show_carryforward_flags: true
 
 github_checks:
   annotations: true
 
 flag_management:
-  default_rules:
-    carryforward: true
-    statuses:
-      - type: project
-        target: auto
   individual_flags:
-    - name: helm-unittest
     - name: activemq
+      carryforward: true
+      statuses:
+        - type: project
+          target: auto
     - name: alfresco-activiti
+      carryforward: true
+      statuses:
+        - type: project
+          target: auto
     - name: alfresco-activiti-admin
+      carryforward: true
+      statuses:
+        - type: project
+          target: auto
     - name: alfresco-adf-app
+      carryforward: true
+      statuses:
+        - type: project
+          target: auto
     - name: alfresco-ai-transformer
+      carryforward: true
+      statuses:
+        - type: project
+          target: auto
     - name: alfresco-audit-storage
+      carryforward: true
+      statuses:
+        - type: project
+          target: auto
     - name: alfresco-common
+      carryforward: true
+      statuses:
+        - type: project
+          target: auto
     - name: alfresco-connector-cic
+      carryforward: true
+      statuses:
+        - type: project
+          target: auto
     - name: alfresco-connector-hxi
+      carryforward: true
+      statuses:
+        - type: project
+          target: auto
     - name: alfresco-connector-ms365
+      carryforward: true
+      statuses:
+        - type: project
+          target: auto
     - name: alfresco-connector-msteams
+      carryforward: true
+      statuses:
+        - type: project
+          target: auto
     - name: alfresco-repository
+      carryforward: true
+      statuses:
+        - type: project
+          target: auto
     - name: alfresco-search-community
+      carryforward: true
+      statuses:
+        - type: project
+          target: auto
     - name: alfresco-search-enterprise
+      carryforward: true
+      statuses:
+        - type: project
+          target: auto
     - name: alfresco-search-service
+      carryforward: true
+      statuses:
+        - type: project
+          target: auto
     - name: alfresco-share
+      carryforward: true
+      statuses:
+        - type: project
+          target: auto
     - name: alfresco-sync-service
+      carryforward: true
+      statuses:
+        - type: project
+          target: auto
     - name: alfresco-transform-service
+      carryforward: true
+      statuses:
+        - type: project
+          target: auto
     - name: elastic
+      carryforward: true
+      statuses:
+        - type: project
+          target: auto
     - name: postgres
+      carryforward: true
+      statuses:
+        - type: project
+          target: auto
 
 component_management:
   default_rules:
