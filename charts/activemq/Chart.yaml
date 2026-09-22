@@ -8,7 +8,7 @@ keywords:
 name: activemq
 sources:
   - https://github.com/Alfresco/alfresco-helm-charts
-version: 4.2.1
+version: 4.3.0-alpha.0
 appVersion: 6.2.9
 dependencies:
   - name: alfresco-common

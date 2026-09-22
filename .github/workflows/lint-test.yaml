@@ -48,7 +48,7 @@ jobs:
 
       - name: List changed files
         id: pr-changes
-        uses: Alfresco/alfresco-build-tools/.github/actions/github-list-changes@v18.28.3
+        uses: Alfresco/alfresco-build-tools/.github/actions/github-list-changes@v18.23.0
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
@@ -94,11 +94,17 @@ jobs:
         with:
           version: ${{ env.HELM_VERSION }}
 
+      - name: Set up Go
+        uses: actions/setup-go@40f1582b2485089dde7abd97c1529aa768e1baff # v5.6.0
+        with:
+          go-version: '1.25'
+          cache: false
+
       - name: Set up Unit Test plugin for Helm
         env:
-          HELM_UNITTEST_VERSION: v1.0.3
+          HELM_UNITTEST_VERSION: feature/coverage
         run: >-
-          helm plugin install https://github.com/helm-unittest/helm-unittest
+          helm plugin install https://github.com/alxgomz/helm-unittest
           --version $HELM_UNITTEST_VERSION
           --verify=false
 
@@ -109,6 +115,23 @@ jobs:
 
       - name: Run chart-testing (lint)
         run: ct lint --config ct.yaml ${{ env.TEST_ALL_CHARTS == 'true' && '--all' || '' }}
+
+      - name: Upload coverage to Codecov
+        if: always()
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+        run: |
+          curl -Os https://cli.codecov.io/latest/linux/codecov
+          chmod +x codecov
+          for f in charts/*/coverage.xml; do
+            [ -f "$f" ] || continue
+            chart=$(basename "$(dirname "$f")")
+            ./codecov --verbose upload-process \
+              --disable-search \
+              -f "$f" \
+              -F helm-unittest \
+              -F "$chart"
+          done
 
   install:
     needs: list-changed
@@ -137,7 +160,7 @@ jobs:
           version: ${{ env.CHART_TESTING_VERSION }}
 
       - name: Create kind cluster
-        uses: Alfresco/alfresco-build-tools/.github/actions/setup-kind@v18.28.3
+        uses: Alfresco/alfresco-build-tools/.github/actions/setup-kind@v18.23.0
         with:
           ingress-nginx-ref: skip
 

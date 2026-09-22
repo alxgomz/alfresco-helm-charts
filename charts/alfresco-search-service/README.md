@@ -5,7 +5,9 @@ parent: Charts Reference
 
 # alfresco-search-service
 
-![Version: 6.3.2](https://img.shields.io/badge/Version-6.3.2-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2.0.22](https://img.shields.io/badge/AppVersion-2.0.22-informational?style=flat-square)
+![Version: 6.4.0-alpha.0](https://img.shields.io/badge/Version-6.4.0--alpha.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2.0.22](https://img.shields.io/badge/AppVersion-2.0.22-informational?style=flat-square)
+
+[![codecov](https://codecov.io/gh/alxgomz/alfresco-helm-charts/branch/main/graph/badge.svg?flag=alfresco-search-service)](https://app.codecov.io/gh/alxgomz/alfresco-helm-charts/flags?flags%5B0%5D=alfresco-search-service)
 
 A Helm chart for deploying Alfresco Search Service
 

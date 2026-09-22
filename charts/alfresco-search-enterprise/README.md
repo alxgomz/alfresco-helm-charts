@@ -5,7 +5,9 @@ parent: Charts Reference
 
 # alfresco-search-enterprise
 
-![Version: 5.3.0](https://img.shields.io/badge/Version-5.3.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 5.8.0](https://img.shields.io/badge/AppVersion-5.8.0-informational?style=flat-square)
+![Version: 5.4.0-alpha.0](https://img.shields.io/badge/Version-5.4.0--alpha.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 5.8.0](https://img.shields.io/badge/AppVersion-5.8.0-informational?style=flat-square)
+
+[![codecov](https://codecov.io/gh/alxgomz/alfresco-helm-charts/branch/main/graph/badge.svg?flag=alfresco-search-enterprise)](https://app.codecov.io/gh/alxgomz/alfresco-helm-charts/flags?flags%5B0%5D=alfresco-search-enterprise)
 
 A Helm chart for deploying Alfresco Elasticsearch connector
 
