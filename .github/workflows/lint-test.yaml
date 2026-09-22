@@ -19,9 +19,20 @@ on:
   pull_request_review:
     types:
       - submitted
+  push:
+    branches:
+      - main
+    paths:
+      - 'charts/**'
+      - '.github/workflows/lint-test.yaml'
+      - 'test-deps.yaml'
+      - '!charts/**/README.md'
+      - '!charts/**/README.md.gotmpl'
+      - '!charts/**/docs/**'
+  workflow_dispatch:
 
 env:
-  TEST_ALL_CHARTS: ${{ contains(github.event.pull_request.labels.*.name, 'ci-test-all') && 'true' || 'false' }}
+  TEST_ALL_CHARTS: ${{ (contains(github.event.pull_request.labels.*.name, 'ci-test-all') || github.event_name == 'push' || github.event_name == 'workflow_dispatch') && 'true' || 'false' }}
   HELM_VERSION: v4.2.3
   CHART_TESTING_VERSION: v3.14.0
 jobs:
