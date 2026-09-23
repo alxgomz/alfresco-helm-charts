@@ -264,3 +264,21 @@ tests:
             helm.sh/chart: alfresco-share-1.0.0
             my-custom-chart-label: custom-value
             my-global-custom-label: global-custom-value
+
+  - it: "[pattern-2] should render custom command and args when set"
+    set:
+      command:
+        - /bin/sh
+        - -c
+      args:
+        - sleep 3600
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].command
+          value:
+            - /bin/sh
+            - -c
+      - equal:
+          path: spec.template.spec.containers[0].args
+          value:
+            - sleep 3600

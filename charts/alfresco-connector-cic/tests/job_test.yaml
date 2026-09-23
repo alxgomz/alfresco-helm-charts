@@ -49,3 +49,33 @@ tests:
             helm.sh/chart: alfresco-connector-cic-1.0.0
             my-global-custom-label: global-custom-value
             my-custom-chart-label: custom-value
+
+  - it: "[pattern-3] should render nodeSelector, affinity, tolerations when set"
+    values:
+      - values/test_values.yaml
+    set:
+      nodeSelector:
+        disktype: ssd
+      bulkIngester:
+        affinity:
+          nodeAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+              nodeSelectorTerms:
+                - matchExpressions:
+                    - key: workload
+                      operator: In
+                      values: [ingest]
+      tolerations:
+        - key: workload
+          operator: Equal
+          value: ingest
+          effect: NoSchedule
+    asserts:
+      - equal:
+          path: spec.template.spec.nodeSelector.disktype
+          value: ssd
+      - equal:
+          path: spec.template.spec.tolerations[0].key
+          value: workload
+      - isNotNull:
+          path: spec.template.spec.affinity.nodeAffinity
