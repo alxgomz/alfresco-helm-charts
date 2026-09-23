@@ -1,0 +1,51 @@
+---
+suite: test repository configmap uncovered branches
+templates:
+  - configmap-repository.yaml
+tests:
+  - it: renders arbitrary environment vars beyond CATALINA_OPTS/JAVA_OPTS
+    set:
+      environment:
+        MY_CUSTOM_VAR: hello
+        ANOTHER_ONE: "42"
+    asserts:
+      - equal:
+          path: data.MY_CUSTOM_VAR
+          value: hello
+      - equal:
+          path: data.ANOTHER_ONE
+          value: "42"
+
+  - it: renders subsystem property secrets from existingSecrets
+    set:
+      configuration:
+        repository:
+          existingSecrets:
+            - name: kms
+              key: KMS_KEY
+              purpose: property:my.custom.prop
+    asserts:
+      - matchRegex:
+          path: data.CATALINA_OPTS
+          pattern: -Dmy\.custom\.prop="\$KMS_KEY"
+
+  - it: renders JDWP agent when debug.enabled
+    set:
+      configuration:
+        debug:
+          enabled: true
+          port: 9999
+          suspend: y
+    asserts:
+      - matchRegex:
+          path: data.CATALINA_OPTS
+          pattern: -agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=0\.0\.0\.0:9999
+
+  - it: appends user CATALINA_OPTS at end
+    set:
+      environment:
+        CATALINA_OPTS: -Dmy.flag=on
+    asserts:
+      - matchRegex:
+          path: data.CATALINA_OPTS
+          pattern: -Dmy\.flag=on

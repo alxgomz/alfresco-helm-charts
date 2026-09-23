@@ -1,0 +1,81 @@
+---
+suite: test helper templates edge cases
+templates:
+  - serviceaccount.yaml
+  - configmap-database.yaml
+  - deployment.yaml
+values:
+  - values/test_values.yaml
+tests:
+  - it: fullnameOverride wins over generated name
+    template: serviceaccount.yaml
+    set:
+      fullnameOverride: my-custom-repo
+      serviceAccount:
+        create: true
+        name: null
+    asserts:
+      - equal:
+          path: metadata.name
+          value: my-custom-repo
+
+  - it: release name containing chart name is used as-is
+    template: configmap-database.yaml
+    release:
+      name: alfresco-repository-prod
+    asserts:
+      - matchRegex:
+          path: metadata.name
+          pattern: ^alfresco-repository-prod-alfresco-database$
+
+  - it: additionalLabels are merged into metadata labels
+    template: deployment.yaml
+    set:
+      additionalLabels:
+        team: platform
+        cost-center: "1234"
+      global:
+        additionalLabels:
+          org: hyland
+    asserts:
+      - isSubset:
+          path: metadata.labels
+          content:
+            team: platform
+            cost-center: "1234"
+            org: hyland
+
+  - it: chart additionalLabels override global additionalLabels
+    template: deployment.yaml
+    set:
+      additionalLabels:
+        env: prod
+      global:
+        additionalLabels:
+          env: staging
+    asserts:
+      - equal:
+          path: metadata.labels.env
+          value: prod
+
+  - it: serviceAccount name defaults to fullname when create=true and no name
+    template: deployment.yaml
+    set:
+      serviceAccount:
+        create: true
+        name: null
+    asserts:
+      - equal:
+          path: spec.template.spec.serviceAccountName
+          value: RELEASE-NAME-alfresco-repository
+
+  - it: serviceAccount name falls back to default when create=false and no name
+    template: deployment.yaml
+    set:
+      serviceAccount:
+        create: false
+        name: null
+    asserts:
+      - equal:
+          path: spec.template.spec.serviceAccountName
+          value: default

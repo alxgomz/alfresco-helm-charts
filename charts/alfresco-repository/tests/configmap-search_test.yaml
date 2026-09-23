@@ -1,0 +1,50 @@
+---
+suite: test repository search configmap
+templates:
+  - configmap-search.yaml
+tests:
+  - it: renders SEARCH_FLAVOR=noindex by default with no URL
+    asserts:
+      - equal:
+          path: data.SEARCH_FLAVOR
+          value: noindex
+      - notExists:
+          path: data.SEARCH_URL
+
+  - it: renders elasticsearch flavor with URL parts
+    set:
+      configuration:
+        search:
+          flavor: elasticsearch
+          url: https://es.example.com:9200
+    asserts:
+      - equal:
+          path: data.SEARCH_FLAVOR
+          value: elasticsearch
+      - equal:
+          path: data.SEARCH_URL
+          value: https://es.example.com:9200
+
+  - it: renders solr6 flavor with URL parts
+    set:
+      configuration:
+        search:
+          flavor: solr6
+          url: http://solr.example.com:8983/solr
+    asserts:
+      - equal:
+          path: data.SEARCH_FLAVOR
+          value: solr6
+      - equal:
+          path: data.SEARCH_URL
+          value: http://solr.example.com:8983/solr
+
+  - it: skips configmap when existingConfigMap.name is set
+    set:
+      configuration:
+        search:
+          existingConfigMap:
+            name: my-search-cm
+    asserts:
+      - hasDocuments:
+          count: 0
