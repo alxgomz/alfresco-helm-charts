@@ -108,9 +108,10 @@ jobs:
       - name: Resolve helm-unittest fork SHA
         id: hu-sha
         env:
-          HELM_UNITTEST_REF: feature/coverage
+          HELM_UNITTEST_REF: feature/coverage-helm4
         run: |
           sha=$(git ls-remote https://github.com/alxgomz/helm-unittest refs/heads/${HELM_UNITTEST_REF} | cut -f1)
+          echo "Using helm-unittest ref ${HELM_UNITTEST_REF} at $sha"
           echo "sha=$sha" >> $GITHUB_OUTPUT
 
       - name: Cache helm-unittest plugin
@@ -130,7 +131,7 @@ jobs:
       - name: Set up Unit Test plugin for Helm
         if: steps.hu-cache.outputs.cache-hit != 'true'
         env:
-          HELM_UNITTEST_VERSION: feature/coverage
+          HELM_UNITTEST_VERSION: feature/coverage-helm4
         run: >-
           helm plugin install https://github.com/alxgomz/helm-unittest
           --version $HELM_UNITTEST_VERSION
