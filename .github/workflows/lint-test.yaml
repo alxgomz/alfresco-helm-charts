@@ -11,6 +11,7 @@ on:
       - labeled
     paths:
       - 'charts/**'
+      - 'codecov.yml'
       - '.github/workflows/lint-test.yaml'
       - 'test-deps.yaml'
       - '!charts/**/README.md'
@@ -24,6 +25,7 @@ on:
       - main
     paths:
       - 'charts/**'
+      - 'codecov.yml'
       - '.github/workflows/lint-test.yaml'
       - 'test-deps.yaml'
       - '!charts/**/README.md'
@@ -32,7 +34,6 @@ on:
   workflow_dispatch:
 
 env:
-  TEST_ALL_CHARTS: ${{ (contains(github.event.pull_request.labels.*.name, 'ci-test-all') || github.event_name == 'push' || github.event_name == 'workflow_dispatch') && 'true' || 'false' }}
   HELM_VERSION: v4.2.3
   CHART_TESTING_VERSION: v3.14.0
 jobs:
@@ -46,6 +47,7 @@ jobs:
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
       has-changes: ${{ steps.set-matrix.outputs.has-changes }}
+      test-all-charts: ${{ steps.set-matrix.outputs.test-all-charts }}
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -70,8 +72,13 @@ jobs:
 
       - name: List changed charts and create matrix
         id: set-matrix
+        env:
+          TEST_ALL_CHARTS: ${{ (contains(github.event.pull_request.labels.*.name, 'ci-test-all') || github.event_name == 'push' || github.event_name == 'workflow_dispatch') && 'true' || 'false' }}
         run: |
-          if [[ "$TEST_ALL_CHARTS" == "true" ]] || echo "${{ steps.pr-changes.outputs.all_changed_files }}" | grep -q '^test-deps.yaml$'; then
+          if  grep -Eq '^(test-deps.yaml|codecov.yml)$' <<< "${{ steps.pr-changes.outputs.all_changed_files }}"; then
+            export TEST_ALL_CHARTS=true
+          fi
+          if [[ "$TEST_ALL_CHARTS" == "true" ]]; then
             charts=$(make list-charts)
           else
             charts=$(ct list-changed --config ct.yaml)
@@ -89,6 +96,7 @@ jobs:
             echo "matrix=[]" >> $GITHUB_OUTPUT
             echo "No charts changed"
           fi
+          echo "test-all-charts=$TEST_ALL_CHARTS" >> $GITHUB_OUTPUT
 
   lint:
     needs: list-changed
@@ -143,6 +151,8 @@ jobs:
           version: ${{ env.CHART_TESTING_VERSION }}
 
       - name: Run chart-testing (lint)
+        env:
+          TEST_ALL_CHARTS:  ${{ needs.list-changed.outputs.test-all-charts }}
         run: ct lint --config ct.yaml ${{ env.TEST_ALL_CHARTS == 'true' && '--all' || '' }}
 
       - name: Upload coverage to Codecov
