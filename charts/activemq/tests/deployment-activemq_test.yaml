@@ -20,6 +20,33 @@ tests:
           path: spec.template.spec.containers[0].env[3].valueFrom.secretKeyRef.name
           value: existing-secret
 
+  - it: "[pattern-6] should render nodeSelector, affinity, tolerations when set"
+    set:
+      nodeSelector:
+        disktype: ssd
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: workload
+                    operator: In
+                    values: [broker]
+      tolerations:
+        - key: workload
+          operator: Equal
+          value: broker
+          effect: NoSchedule
+    asserts:
+      - equal:
+          path: spec.template.spec.nodeSelector.disktype
+          value: ssd
+      - isNotNull:
+          path: spec.template.spec.affinity.nodeAffinity
+      - equal:
+          path: spec.template.spec.tolerations[0].key
+          value: workload
+
   - it: should render cpu and memory limits
     asserts:
       - equal:

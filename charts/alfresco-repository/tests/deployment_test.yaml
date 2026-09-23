@@ -319,3 +319,31 @@ tests:
           value: Recreate
       - notExists:
           path: spec.strategy.rollingUpdate
+
+  - it: "[pattern-5] should render extraVolumeMounts, extraSideContainers and tolerations when set"
+    values: *test_values
+    set:
+      extraVolumeMounts:
+        - name: extra-cache
+          mountPath: /var/cache
+      extraSideContainers:
+        - name: log-tailer
+          image: busybox:1.37
+          command: [tail, -f, /var/log/messages]
+      tolerations:
+        - key: workload
+          operator: Equal
+          value: repo
+          effect: NoSchedule
+    asserts:
+      - contains:
+          path: spec.template.spec.containers[0].volumeMounts
+          content:
+            name: extra-cache
+            mountPath: /var/cache
+      - equal:
+          path: spec.template.spec.containers[1].name
+          value: log-tailer
+      - equal:
+          path: spec.template.spec.tolerations[0].key
+          value: workload
