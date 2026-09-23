@@ -71,3 +71,5 @@ component_management:
       paths: ["charts/elastic/**"]
     - component_id: postgres
       paths: ["charts/postgres/**"]
+codecov:
+  bot: alfresco-build
