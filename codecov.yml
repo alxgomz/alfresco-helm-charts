@@ -19,107 +19,32 @@ github_checks:
   annotations: true
 
 flag_management:
+  default_rules:
+    carryforward: true
+    statuses:
+      - type: project
+        target: auto
   individual_flags:
     - name: activemq
-      carryforward: true
-      statuses:
-        - type: project
-          target: auto
     - name: alfresco-activiti
-      carryforward: true
-      statuses:
-        - type: project
-          target: auto
     - name: alfresco-activiti-admin
-      carryforward: true
-      statuses:
-        - type: project
-          target: auto
     - name: alfresco-adf-app
-      carryforward: true
-      statuses:
-        - type: project
-          target: auto
     - name: alfresco-ai-transformer
-      carryforward: true
-      statuses:
-        - type: project
-          target: auto
     - name: alfresco-audit-storage
-      carryforward: true
-      statuses:
-        - type: project
-          target: auto
     - name: alfresco-common
-      carryforward: true
-      statuses:
-        - type: project
-          target: auto
     - name: alfresco-connector-cic
-      carryforward: true
-      statuses:
-        - type: project
-          target: auto
     - name: alfresco-connector-hxi
-      carryforward: true
-      statuses:
-        - type: project
-          target: auto
     - name: alfresco-connector-ms365
-      carryforward: true
-      statuses:
-        - type: project
-          target: auto
     - name: alfresco-connector-msteams
-      carryforward: true
-      statuses:
-        - type: project
-          target: auto
     - name: alfresco-repository
-      carryforward: true
-      statuses:
-        - type: project
-          target: auto
     - name: alfresco-search-community
-      carryforward: true
-      statuses:
-        - type: project
-          target: auto
     - name: alfresco-search-enterprise
-      carryforward: true
-      statuses:
-        - type: project
-          target: auto
     - name: alfresco-search-service
-      carryforward: true
-      statuses:
-        - type: project
-          target: auto
     - name: alfresco-share
-      carryforward: true
-      statuses:
-        - type: project
-          target: auto
     - name: alfresco-sync-service
-      carryforward: true
-      statuses:
-        - type: project
-          target: auto
     - name: alfresco-transform-service
-      carryforward: true
-      statuses:
-        - type: project
-          target: auto
     - name: elastic
-      carryforward: true
-      statuses:
-        - type: project
-          target: auto
     - name: postgres
-      carryforward: true
-      statuses:
-        - type: project
-          target: auto
 
 component_management:
   default_rules:
@@ -128,62 +53,42 @@ component_management:
         target: auto
   individual_components:
     - component_id: activemq
-      name: activemq
       paths: ["charts/activemq/**"]
     - component_id: alfresco-activiti
-      name: alfresco-activiti
       paths: ["charts/alfresco-activiti/**"]
     - component_id: alfresco-activiti-admin
-      name: alfresco-activiti-admin
       paths: ["charts/alfresco-activiti-admin/**"]
     - component_id: alfresco-adf-app
-      name: alfresco-adf-app
       paths: ["charts/alfresco-adf-app/**"]
     - component_id: alfresco-ai-transformer
-      name: alfresco-ai-transformer
       paths: ["charts/alfresco-ai-transformer/**"]
     - component_id: alfresco-audit-storage
-      name: alfresco-audit-storage
       paths: ["charts/alfresco-audit-storage/**"]
     - component_id: alfresco-common
-      name: alfresco-common
       paths: ["charts/alfresco-common/**"]
     - component_id: alfresco-connector-cic
-      name: alfresco-connector-cic
       paths: ["charts/alfresco-connector-cic/**"]
     - component_id: alfresco-connector-hxi
-      name: alfresco-connector-hxi
       paths: ["charts/alfresco-connector-hxi/**"]
     - component_id: alfresco-connector-ms365
-      name: alfresco-connector-ms365
       paths: ["charts/alfresco-connector-ms365/**"]
     - component_id: alfresco-connector-msteams
-      name: alfresco-connector-msteams
       paths: ["charts/alfresco-connector-msteams/**"]
     - component_id: alfresco-repository
-      name: alfresco-repository
       paths: ["charts/alfresco-repository/**"]
     - component_id: alfresco-search-community
-      name: alfresco-search-community
       paths: ["charts/alfresco-search-community/**"]
     - component_id: alfresco-search-enterprise
-      name: alfresco-search-enterprise
       paths: ["charts/alfresco-search-enterprise/**"]
     - component_id: alfresco-search-service
-      name: alfresco-search-service
       paths: ["charts/alfresco-search-service/**"]
     - component_id: alfresco-share
-      name: alfresco-share
       paths: ["charts/alfresco-share/**"]
     - component_id: alfresco-sync-service
-      name: alfresco-sync-service
       paths: ["charts/alfresco-sync-service/**"]
     - component_id: alfresco-transform-service
-      name: alfresco-transform-service
       paths: ["charts/alfresco-transform-service/**"]
     - component_id: elastic
-      name: elastic
       paths: ["charts/elastic/**"]
     - component_id: postgres
-      name: postgres
       paths: ["charts/postgres/**"]
